@@ -31,7 +31,15 @@ public class LaunchCamera : MonoBehaviour {
 		// Start web cam feed
 		//webcamTexture = new WebCamTexture();
 		//webcamTexture.Play();
-		WLRatio = (float)MyCameraDevice.CameraWidth / (float)MyCameraDevice.CameraHeight;
+		print ("is support from cam = " + MyCameraDevice.isSurpportFrontCam());
+		if (MyCameraDevice.isSurpportFrontCam ()) {
+			WLRatio = (float)MyCameraDevice.CameraWidth / (float)MyCameraDevice.CameraHeight;
+			CameraView.localScale = new Vector3(CameraView.localScale.x * (CameraView.localScale.y / CameraView.localScale.x) * WLRatio ,CameraView.localScale.y,
+			                                    CameraView.localScale.z);
+		} else {
+
+		}
+
 		/*
 		print ("b = " + CameraView.localScale);
 		print("webcamTexture.width = " + webcamTexture.width);
@@ -42,8 +50,7 @@ public class LaunchCamera : MonoBehaviour {
 		print ("(CameraView.localScale.y / CameraView.localScale.x) = " + (CameraView.localScale.y / CameraView.localScale.x));
 		print ("s = " + ((CameraView.localScale.y / CameraView.localScale.x) * WLRatio));
 		*/
-		CameraView.localScale = new Vector3(CameraView.localScale.x * (CameraView.localScale.y / CameraView.localScale.x) * WLRatio ,CameraView.localScale.y,
-			CameraView.localScale.z);
+
 		//print ("a = " + CameraView.localScale);
 		//print("webcamTexture.width = " + webcamTexture.width);
 		//print("webcamTexture.height = " + webcamTexture.height);
