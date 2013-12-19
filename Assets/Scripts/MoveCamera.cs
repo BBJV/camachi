@@ -9,6 +9,7 @@ public class MoveCamera : MonoBehaviour {
 	private float RotateIndex;
 	public float AnimationTime = 1.5f;
 	public Transform LookAtTransform;
+	public string CallWhenFinish = "ChangeState";
 	bool IsInit;
 	// Use this for initialization
 	void Start () {
@@ -32,7 +33,7 @@ public class MoveCamera : MonoBehaviour {
 		}else{
 			MainCameraTransform.position = CameraPosition.position;
 			MainCameraTransform.rotation = CameraPosition.rotation;
-			transform.root.BroadcastMessage("ChangeState",MyState.State_Run);
+			transform.root.BroadcastMessage(CallWhenFinish,MyState.State_Run);
 		}
 		
 		if(LookAtTransform){
