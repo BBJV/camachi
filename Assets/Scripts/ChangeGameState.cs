@@ -1,17 +1,22 @@
 using UnityEngine;
 using System.Collections;
 
-public class ClickChangeGameState : MonoBehaviour {
+public class ChangeGameState : MonoBehaviour {
 	//public Transform HitTransform;
 	public Transform NextStateTransform;
+	public ActionEvent MyEvent;
 	//Ray ray;
 	//RaycastHit hit ;
 	// Use this for initialization
-	void Start () {
-	
-	}
 	void ClickedOn(){
-		GameState.ChangeGameState(NextStateTransform);
+		if (MyEvent == ActionEvent.WhenClick) {
+			GameState.ChangeGameState(NextStateTransform);
+		}
+	}
+	void MoveEnd(){
+		if (MyEvent == ActionEvent.WhenMoveEnd) {
+			GameState.ChangeGameState(NextStateTransform);
+		}
 	}
 	/*
 	// Update is called once per frame
