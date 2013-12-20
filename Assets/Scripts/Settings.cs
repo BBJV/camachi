@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 public enum	ActionEvent{
+	//system event
 	WhenOn,
 	WhenOff,
-	WhenMoveStart,
-	WhenMoveEnd,
-	WhenClick,
+	//customize
+	Customize
 };
 public class Settings {
 

@@ -12,6 +12,7 @@ public class Click : MonoBehaviour {
 	private static string ClickedOn = "ClickedOn";
 	private static string ClickedOff = "ClickedOff";
 	private int IngnoreLayerShift;
+	public int EndActionTag;
 	// Use this for initialization
 	void Start () {
 		IngnoreLayerShift = 1 << IgnoreLayer;
@@ -25,17 +26,24 @@ public class Click : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0)) {
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	        if (Physics.Raycast (ray, out hit,Mathf.Infinity,IngnoreLayerShift) && hit.transform == HitTransform) {
+				MyAction tempaction = new MyAction();
+				tempaction.Tag = EndActionTag;
 				//if there is switch function
 				if(IsSwitch){
 					NowSwitch = !NowSwitch;
+
 					if(NowSwitch){
-						BroadcastMessage(ClickedOn,SendMessageOptions.DontRequireReceiver);
+//						BroadcastMessage(ClickedOn,SendMessageOptions.DontRequireReceiver);
+						tempaction.Message = "on";
 					}else{
-						BroadcastMessage(ClickedOff,SendMessageOptions.DontRequireReceiver);
+						tempaction.Message = "off";
+//						BroadcastMessage(ClickedOff,SendMessageOptions.DontRequireReceiver);
 					}
 				}else{
-					BroadcastMessage(ClickedOn,SendMessageOptions.DontRequireReceiver);
+					tempaction.Message = "on";
+//					BroadcastMessage(ClickedOn,SendMessageOptions.DontRequireReceiver);
 				}
+				BroadcastMessage(MyAction.ActionString,tempaction);
 	        }
 		}
 #else

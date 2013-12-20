@@ -15,7 +15,11 @@ public class RotateThing : MonoBehaviour {
 	private bool IsRotateOK;
 	private float RotateIndex;
 	private Quaternion ToAngle;
-	bool IsInit;
+//	bool IsInit;
+
+	public ActionEvent MyActionEvent;
+	public int StartActionTag;
+	public int EndActionTag = -1;
 	private Quaternion OriginalQuaternion;
 	// Use this for initialization
 	void Start () {
@@ -24,39 +28,44 @@ public class RotateThing : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!IsInit){
-			IsInit = true;
-			ToAngle = Quaternion.Euler(MyRotateAngle);
-			RotateIndex = Quaternion.Angle(RotateTransform.rotation,ToAngle) / MyRotateTime;
-			if(RotateIndex == 0.0f){
-				return;
-			}
-			//print ("Quaternion.Angle(RotateTransform.rotation,ToAngle) = " + Quaternion.Angle(RotateTransform.rotation,ToAngle));
-			//print ("RotateIndex = " + RotateIndex);
-		}
+//		if(!IsInit){
+//			IsInit = true;
+//			ToAngle = Quaternion.Euler(MyRotateAngle);
+//			RotateIndex = Quaternion.Angle(RotateTransform.rotation,ToAngle) / MyRotateTime;
+//			if(RotateIndex == 0.0f){
+//				return;
+//			}
+//			//print ("Quaternion.Angle(RotateTransform.rotation,ToAngle) = " + Quaternion.Angle(RotateTransform.rotation,ToAngle));
+//			//print ("RotateIndex = " + RotateIndex);
+//		}
 		if(!IsRotateOK){
 			RotateTransform.rotation = 
 				Quaternion.RotateTowards(RotateTransform.rotation,ToAngle,Time.deltaTime * RotateIndex);
 			//print("RotateTransform.rotation = " + RotateTransform.rotation);
 			if(Quaternion.Angle(RotateTransform.rotation,ToAngle) < 0.1f){
 				IsRotateOK = true;
-				if(FinishBBroadcastMessageName != null){
-					BroadcastMessage(FinishBBroadcastMessageName,SendMessageOptions.DontRequireReceiver);
+				if(EndActionTag >= 0){
+					MyAction tempaction = new MyAction();
+					tempaction.Tag = EndActionTag;
+					BroadcastMessage(MyAction.ActionString,tempaction);
 				}
 			}
 		}
 	}
-	void Rotate(Vector3 rotateAngle){
-		IsRotateOK = false;
-		IsInit = false;
-		OriginalQuaternion = RotateTransform.rotation;
-		MyRotateAngle = rotateAngle;
+	void Action(MyAction action){
+		if(StartActionTag == action.Tag){
+			IsRotateOK = false;
+			OriginalQuaternion = RotateTransform.rotation;
+			ToAngle = Quaternion.Euler(MyRotateAngle);
+			RotateIndex = Quaternion.Angle(RotateTransform.rotation,ToAngle) / MyRotateTime;
+		}
 	}
 	void OnEnable(){
 		IsRotateOK = true;
-		IsInit = true;
-		if(MyTriggerType == TriggerType.OnEnable){
-			Rotate(MyRotateAngle);
+		if(MyActionEvent == ActionEvent.WhenOn){
+			MyAction tempaction = new MyAction();
+			tempaction.Tag = StartActionTag;
+			Action(tempaction);
 		}
 	}
 	

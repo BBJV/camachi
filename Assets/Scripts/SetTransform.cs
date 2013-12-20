@@ -5,8 +5,11 @@ public class SetTransform : MonoBehaviour {
 	public bool IsEnable;
 	public Transform MyTrnsform;
 	public bool DisableWhenDisable = false;
-	void SetEnableTransform(){
-		MyTrnsform.gameObject.SetActive(IsEnable);
+	public int StartActionTag;
+	void Action(MyAction action){
+		if (StartActionTag == action.Tag) {
+			MyTrnsform.gameObject.SetActive(IsEnable);
+		}
 	}
 	void OnDisable(){
 		if(MyTrnsform){

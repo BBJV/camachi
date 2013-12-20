@@ -2,16 +2,22 @@ using UnityEngine;
 using System.Collections;
 
 public class EnableQueue : MonoBehaviour {
-	public static string SetEnableTransform = "SetEnableTransform";
-	public ActionEvent MyEvent;
+//	public static string SetEnableTransform = "SetEnableTransform";
+	public ActionEvent ActionStart;
+	public int StartActionTag;
+	public int EndActionTag;
 	void OnEnable () {
-		if(MyEvent == ActionEvent.WhenOn){
-			BroadcastMessage(SetEnableTransform);
+		if(ActionStart == ActionEvent.WhenOn){
+			MyAction tempaction = new MyAction();
+			tempaction.Tag = StartActionTag;
+			Action(tempaction);
 		}
 	}
-	void MoveEnd(){
-		if (MyEvent == ActionEvent.WhenMoveEnd) {
-			BroadcastMessage(SetEnableTransform);
+	void Action(MyAction action){
+		if (StartActionTag == action.Tag) {
+			MyAction tempaction = new MyAction();
+			tempaction.Tag = EndActionTag;
+			BroadcastMessage(MyAction.ActionString,tempaction);
 		}
 	}
 }

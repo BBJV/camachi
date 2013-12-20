@@ -9,20 +9,21 @@ public class MoveCamera : MonoBehaviour {
 	private float RotateIndex;
 	public float AnimationTime = 1.5f;
 	public Transform LookAtTransform;
-	public string CallWhenFinish = "ChangeState";
-	bool IsInit;
+	public ActionEvent MyActionEvent;
+	public int StartActionTag;
+	public int EndActionTag;
+	bool IsStart;
+//	public string CallWhenFinish = "ChangeState";
+//	bool IsInit;
 	// Use this for initialization
 	void Start () {
-		MainCamera = Camera.main;
-		MainCameraTransform = MainCamera.transform;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(!IsInit){
-			IsInit = true;
-			MoveIndex = Vector3.Magnitude(MainCameraTransform.position - CameraPosition.position) / AnimationTime;
-			RotateIndex = Quaternion.Angle(MainCameraTransform.rotation,CameraPosition.rotation) / AnimationTime;
+		if(!IsStart){
+			return;
 		}
 		if(Vector3.SqrMagnitude(MainCameraTransform.position - CameraPosition.position) > 0.01f){
 			MainCameraTransform.position = Vector3.MoveTowards(MainCameraTransform.position,CameraPosition.position,MoveIndex * Time.deltaTime);
@@ -33,7 +34,11 @@ public class MoveCamera : MonoBehaviour {
 		}else{
 			MainCameraTransform.position = CameraPosition.position;
 			MainCameraTransform.rotation = CameraPosition.rotation;
-			transform.root.BroadcastMessage(CallWhenFinish,MyState.State_Run);
+			if(EndActionTag >= 0){
+				MyAction tempaction = new MyAction();
+				tempaction.Tag = EndActionTag;
+				transform.root.BroadcastMessage(MyAction.ActionString,tempaction);
+			}
 		}
 		
 		if(LookAtTransform){
@@ -41,6 +46,20 @@ public class MoveCamera : MonoBehaviour {
 		}
 	}
 	void OnEnable(){
-		IsInit = false;
+		if(MyActionEvent == ActionEvent.WhenOn){
+			MyAction tempaction = new MyAction();
+			tempaction.Tag = StartActionTag;
+			Action(tempaction);
+		}
+	}
+
+	void Action(MyAction action){
+		if (StartActionTag == action.Tag) {
+			MainCamera = Camera.main;
+			MainCameraTransform = MainCamera.transform;
+			MoveIndex = Vector3.Magnitude(MainCameraTransform.position - CameraPosition.position) / AnimationTime;
+			RotateIndex = Quaternion.Angle(MainCameraTransform.rotation,CameraPosition.rotation) / AnimationTime;
+			IsStart = true;
+		}
 	}
 }
