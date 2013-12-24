@@ -10,6 +10,7 @@ public class ChangeGameState : MonoBehaviour {
 	// Use this for initialization
 	void Action(MyAction action){
 		if (StartTag == action.Tag) {
+			print("ChangeGameState");
 			GameState.ChangeGameState(NextStateTransform);
 		}
 	}

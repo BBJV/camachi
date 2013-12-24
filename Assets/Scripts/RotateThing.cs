@@ -7,11 +7,11 @@ using System.Collections;
 
 public class RotateThing : MonoBehaviour {
 	public Transform RotateTransform;
-	public TriggerType MyTriggerType = TriggerType.OnEnable;
+//	public TriggerType MyTriggerType = TriggerType.OnEnable;
 	private Transform MyTransform;
 	public float MyRotateTime;
 	public Vector3 MyRotateAngle;
-	public string FinishBBroadcastMessageName = null;
+//	public string FinishBBroadcastMessageName = null;
 	private bool IsRotateOK;
 	private float RotateIndex;
 	private Quaternion ToAngle;

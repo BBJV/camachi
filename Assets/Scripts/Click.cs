@@ -24,6 +24,7 @@ public class Click : MonoBehaviour {
 	void Update () {
 #if UNITY_EDITOR
 		if (Input.GetMouseButtonDown(0)) {
+			print ("HitTransform = " + HitTransform.name);
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	        if (Physics.Raycast (ray, out hit,Mathf.Infinity,IngnoreLayerShift) && hit.transform == HitTransform) {
 				MyAction tempaction = new MyAction();
